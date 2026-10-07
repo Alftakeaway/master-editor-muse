@@ -12,18 +12,19 @@ L’applicazione funziona senza chiavi API o servizi AI. L’integrazione AI è 
 
 ## Funzionalità
 
-| Area         | Strumenti disponibili                                                                                                       |
+| Area | Percorsi | 36 alberi decisionali, piani salvabili, note, verifica dell’esito e collegamenti agli strumenti |
+| Strumenti disponibili |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| Dashboard    | Selezione e creazione di progetti, titolo, genere, obiettivo totale e giornaliero                                           |
-| Studio       | Capitoli e scene ordinabili, sinossi, note, metadati, annulla/ripeti, concentrazione, sprint e taccuino contestuale         |
-| Bacheca      | Schede delle scene con sinossi e ordine collegato al manoscritto                                                            |
-| Muse         | Premessa, tema, conflitto, posta in gioco, alternative e domanda editoriale                                                 |
-| Story Bible  | Schede modificabili per personaggi, luoghi, oggetti e regole                                                                |
-| Architettura | Beat ordinabili, atto, conseguenze e collegamento alla scena                                                                |
-| Editor       | Checklist salvata ed esportabile per developmental, line, copy edit e proofreading                                          |
-| Continuità   | Timeline dalle date delle scene, luoghi non documentati e collegamenti ai beat mancanti                                     |
-| Publisher    | Genere, lettore, logline, sinossi, pitch, query, comp titles, percorso, export TXT e stampa/PDF del dossier                 |
-| Strumenti    | Ricerca nelle scene, parole, caratteri, tempo di lettura, ripetizioni, frasi lunghe e statistiche degli ultimi sette giorni |
+| Dashboard | Selezione e creazione di progetti, titolo, genere, obiettivo totale e giornaliero |
+| Studio | Capitoli e scene ordinabili, sinossi, note, metadati, annulla/ripeti, concentrazione, sprint e taccuino contestuale |
+| Bacheca | Schede delle scene con sinossi e ordine collegato al manoscritto |
+| Muse | Premessa, tema, conflitto, posta in gioco, alternative e domanda editoriale |
+| Story Bible | Schede modificabili per personaggi, luoghi, oggetti e regole |
+| Architettura | Beat ordinabili, atto, conseguenze e collegamento alla scena |
+| Editor | Checklist salvata ed esportabile per developmental, line, copy edit e proofreading |
+| Continuità | Timeline dalle date delle scene, luoghi non documentati e collegamenti ai beat mancanti |
+| Publisher | Genere, lettore, logline, sinossi, pitch, query, comp titles, percorso, export TXT e stampa/PDF del dossier |
+| Strumenti | Ricerca nelle scene, parole, caratteri, tempo di lettura, ripetizioni, frasi lunghe e statistiche degli ultimi sette giorni |
 
 Il salvataggio locale accorpa le modifiche con una pausa di 350 ms e viene completato quando lasci un campo, cambi sezione o nascondi la pagina. Lo stato distingue modifiche in attesa, salvataggio riuscito e sospensione. La dashboard mostra le parole del progetto, la percentuale dell’obiettivo e le parole nette aggiunte nella giornata. Lo Studio permette di conservare e ripristinare versioni del testo.
 
@@ -91,6 +92,8 @@ index.html          Struttura della pagina e navigazione
 style.css           Design editoriale e adattamento agli schermi
 app.js              Interfaccia, navigazione e azioni
 core.js             Modello, validazione, migrazione, import e strumenti del testo
+paths-data.js       Catalogo editoriale, fonti e alberi decisionali
+paths-ui.js         Percorsi interattivi e quaderno dei piani
 icon.svg            Icona del sito
 server.js           Server locale dei file attivi
 package.json        Comandi di avvio e verifica
@@ -163,3 +166,20 @@ Le nuove funzioni sono eseguite sul dispositivo: nessun abbonamento, chiave API 
 - **Recupero**: un solo file muse-recupero.json conserva il lavoro locale e la stringa originale dell’archivio nel campo recoveryOriginalRaw. Importandolo normalmente vengono recuperati i progetti correnti; il dato originale rimane disponibile per un recupero tecnico.
 
 I font possono richiedere rete al primo caricamento. Non è ancora presente un service worker: l’app non promette un avvio offline dopo la chiusura del browser.
+
+## Percorsi decisionali per scrittori
+
+La sezione **Percorsi** è accessibile dal menu, dalla Dashboard e dal pulsante **Un ostacolo?** nello Studio. Copre 36 difficoltà ricorrenti in sette aree: Ripartire, Ideare, Strutturare, Personaggi e mondo, Revisionare, Condividere, Gestire il lavoro. È un catalogo ampio, non una tassonomia esaustiva di ogni difficoltà possibile.
+
+Ogni albero ha due domande specifiche e, dove pertinente, una terza per scegliere una prova breve o estesa. Si arriva a uno dei 293 esiti: 148 protocolli editoriali con varianti di durata (3 esiti di sostegno non richiedono un timer). Ogni risultato contiene motivazione, tre azioni, criterio di verifica, alternativa se non basta, percorsi correlati e fonti.
+
+- Ricerca per testo e filtro per area.
+- Indietro, ricomincia e ritorno a una scelta precedente attraverso il riepilogo.
+- Collegamento alla sezione pertinente senza sostituire il manoscritto.
+- **Salva piano nel progetto**: conserva fino a 30 piani, note e stato “Ho svolto la prova”. Salvataggi ripetuti dello stesso esito aggiornano le note senza duplicare il piano.
+- Export TXT del piano. Backup JSON include il quaderno; importazione rigenera gli ID dei piani senza perdere contenuti.
+- La navigazione e le risposte rimangono soltanto nella sessione, separatamente per progetto. Il quaderno salva il piano scelto e gli appunti espliciti, non il questionario.
+
+Gli esercizi sono una sintesi editoriale originale. Lo studio di Ahmed e Güss informa la classificazione del blocco, ma non valida questo strumento come test diagnostico. I percorsi non attribuiscono condizioni cliniche dalla durata del blocco; quelli sul disagio generale indicano sostegno senza obiettivi di produzione. Non sono richiesti AI, account, API o servizi a pagamento.
+
+Catalogo completo e criteri: [docs/PERCORSI.md](docs/PERCORSI.md).

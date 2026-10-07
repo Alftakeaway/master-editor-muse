@@ -225,6 +225,7 @@ function boot(initial = {}) {
   };
   const context = vm.createContext({
     Muse: M,
+    WriterPaths: require("../paths-data"),
     localStorage: storage,
     document: {
       querySelector: element,
@@ -238,6 +239,7 @@ function boot(initial = {}) {
     setTimeout,
     clearTimeout,
   });
+  vm.runInContext(fs.readFileSync("paths-ui.js", "utf8"), context);
   vm.runInContext(fs.readFileSync("app.js", "utf8"), context);
   return { context, storage, run: (code) => vm.runInContext(code, context) };
 }
@@ -256,6 +258,7 @@ test("all active views render with escaping and no AI calls", () => {
     "continuity",
     "publisher",
     "tools",
+    "paths",
   ]) {
     const html = app.run(`views.${v}()`);
     assert.equal(html.includes("data-ai="), false);

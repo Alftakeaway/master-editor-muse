@@ -137,7 +137,7 @@ const views = {
       ["Costruisci la Story Bible", p.bible.length > 0, "characters"],
       ["Conserva un backup", !!p.lastBackup, "backup"],
     ];
-    return `${head("IL TUO STUDIO", "Scrivi con coraggio.", "Riscrivi con precisione.")}<div class="project"><div class="card"><div class="eyebrow">PROGETTO ATTIVO</div><h2>${esc(p.title)}</h2><p>${esc(p.genre)} · ${scenes().length} scene</p><div class="progress" role="progressbar" aria-label="Obiettivo romanzo" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="metrics"><div><strong>${n.toLocaleString("it")}</strong><span>PAROLE</span></div><div><strong>${pct}%</strong><span>OBIETTIVO</span></div><div><strong>${p.chapters.length}</strong><span>CAPITOLI</span></div></div></div><div class="card"><div class="eyebrow">LA SESSIONE DI OGGI</div><h3>${p.sessions[day()] || 0} / ${p.dailyGoal} parole</h3><p>Variazione netta del testo: può essere negativa quando tagli. Anche la revisione è lavoro.</p>${button("Apri Studio →", "studio")}</div></div><div class="grid4">${[
+    return `${head("IL TUO STUDIO", "Scrivi con coraggio.", "Riscrivi con precisione.")}<div class="project"><div class="card"><div class="eyebrow">PROGETTO ATTIVO</div><h2>${esc(p.title)}</h2><p>${esc(p.genre)} · ${scenes().length} scene</p><div class="progress" role="progressbar" aria-label="Obiettivo romanzo" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="metrics"><div><strong>${n.toLocaleString("it")}</strong><span>PAROLE</span></div><div><strong>${pct}%</strong><span>OBIETTIVO</span></div><div><strong>${p.chapters.length}</strong><span>CAPITOLI</span></div></div></div><div class="card"><div class="eyebrow">LA SESSIONE DI OGGI</div><h3>${p.sessions[day()] || 0} / ${p.dailyGoal} parole</h3><p>Variazione netta del testo: può essere negativa quando tagli. Anche la revisione è lavoro.</p>${button("Apri Studio →", "studio")} ${button("Trova il prossimo passo", "paths")}</div></div><div class="grid4">${[
       ["muse", "Muse", "Premessa, tema e conflitto."],
       ["studio", "Studio", "Capitoli, scene e scrittura."],
       ["editor", "Editor", "Rilettura e strumenti del testo."],
@@ -153,7 +153,7 @@ const views = {
   },
   studio() {
     const s = scene();
-    return `<div class="studio-top"><div><div class="eyebrow">STUDIO</div><h2>${esc(current().title)}</h2></div><div>${button("Bacheca scene", "board")} ${button("Concentrazione", "focus", `aria-pressed="${focusMode}"`)}<span id="sprintClock" role="timer"></span></div></div><div class="workspace"><div class="tree"><div class="eyebrow">MANOSCRITTO</div>${current()
+    return `<div class="studio-top"><div><div class="eyebrow">STUDIO</div><h2>${esc(current().title)}</h2></div><div>${button("Bacheca scene", "board")} ${button("Un ostacolo?", "paths")} ${button("Concentrazione", "focus", `aria-pressed="${focusMode}"`)}<span id="sprintClock" role="timer"></span></div></div><div class="workspace"><div class="tree"><div class="eyebrow">MANOSCRITTO</div>${current()
       .chapters.map(
         (c) =>
           `<section><input aria-label="Titolo capitolo" data-chapter="${esc(c.id)}" value="${esc(c.title)}"><div class="order-actions">${button("↑", "chapterUp", `data-id="${esc(c.id)}" aria-label="Sposta capitolo prima"`)} ${button("↓", "chapterDown", `data-id="${esc(c.id)}" aria-label="Sposta capitolo dopo"`)} ${button("Elimina", "deleteChapter", `data-id="${esc(c.id)}"`)}</div>${c.scenes.map((x) => `<button class="${x.id === s.id ? "sel" : ""}" data-scene="${esc(x.id)}" ${x.id === s.id ? 'aria-current="true"' : ""}>${esc(x.title)} <small>${words(x.text)}</small></button>`).join("")}${button("＋ Scena", "addScene", `data-id="${esc(c.id)}"`)}</section>`,
@@ -290,6 +290,9 @@ const views = {
       `<div class="actions">${button("Esporta dossier .txt", "publisherExport")} ${button("Stampa dossier / PDF", "printPublisher")}</div>`
     );
   },
+  paths() {
+    return pathUI.render();
+  },
   tools() {
     return `${head("STRUMENTI", "Una lente sulla tua scrittura.", "Strumenti locali: il manoscritto resta sul dispositivo.")}<div class="project"><div class="card"><h3>Trova nel romanzo</h3><label for="searchText">Parola o frase</label><input id="searchText" type="search" placeholder="Un nome, un oggetto, una promessa…"><div id="searchResults" aria-live="polite"></div></div><div class="card"><h3>Osserva il testo</h3><label for="analysisScope">Testo da osservare</label><select id="analysisScope"><option value="scene">Scena attiva: ${esc(scene().title)}</option><option value="project">Intero manoscritto</option></select><div id="textAnalysis">${analysisMarkup(scene().text)}</div></div></div><div class="card"><h3>Il ritmo del lavoro</h3><p>Variazioni nette negli ultimi sette giorni. I valori negativi indicano tagli, non giornate perse.</p><div class="week-stats">${Array.from(
       { length: 7 },
@@ -304,6 +307,19 @@ const views = {
     )}</div></div><div class="card"><h3>Una scrivania senza distrazioni</h3><p>Usa Concentrazione nello Studio e uno sprint da 1 a 120 minuti. Il timer resta attivo quando cambi sezione.</p><p><kbd>Ctrl / Cmd + S</kbd> salva una versione · <kbd>Ctrl / Cmd + E</kbd> esporta il progetto · <kbd>Esc</kbd> esce dalla concentrazione.</p>${button("Vai allo Studio", "studio")}</div>`;
   },
 };
+const pathUI = WriterPathsUI.create({
+  catalog: WriterPaths,
+  current,
+  save,
+  notice,
+  download,
+  open: render,
+  esc,
+  uid,
+  ask,
+});
+pathUI.attach(main);
+
 function contextNotes() {
   const s = scene(),
     source = (s.text + " " + s.pov + " " + s.location).toLocaleLowerCase("it");

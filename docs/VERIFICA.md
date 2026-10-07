@@ -27,3 +27,12 @@ Non sono verificati automaticamente tutti i browser, ogni combinazione di file o
 - Ripristino del valore precedente dopo un obiettivo numerico lasciato vuoto.
 - Preparazione della stampa del dossier con i contenuti Publisher.
 - Archivio danneggiato in un browser isolato: export del dato originale e reimpostazione con copia.
+
+## Percorsi decisionali — aggiornamento
+
+28 test automatici complessivi. Aggiunte prove di copertura di tutti i rami (36 alberi e 293 esiti), massimo tre domande, ritorno a una scelta precedente, filtri, risultati di sostegno e import/export dei piani.
+
+Nel browser: percorso del blocco fino al risultato, salvataggio con note, aggiornamento senza duplicati, stato completato, ricaricamento, apertura Studio, ricerca e filtro, ramo di sostegno senza timer, navigazione indietro, nuovo progetto con quaderno separato, export TXT e layout a 390 px senza scorrimento orizzontale.
+
+- Verificato roundtrip reale del backup JSON con piano, note e stato completato.
+- Verificati annullamento e conferma della rimozione dal quaderno.

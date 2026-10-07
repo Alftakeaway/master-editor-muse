@@ -70,6 +70,7 @@
       },
       sessions: {},
       history: [],
+      guidancePlans: [],
       checklist: {},
       lastBackup: "",
     };
@@ -228,6 +229,54 @@
         throw Error("Checklist non valida.");
       if (p.lastBackup !== undefined && !text(p.lastBackup))
         throw Error("Data backup non valida.");
+      if (p.guidancePlans !== undefined) {
+        if (!Array.isArray(p.guidancePlans) || p.guidancePlans.length > 100)
+          throw Error("Quaderno dei percorsi non valido.");
+        for (const g of p.guidancePlans) {
+          if (
+            !record(g) ||
+            !id(g.id) ||
+            !id(g.issueId) ||
+            !id(g.nodeId) ||
+            !["title", "why", "check", "fallback", "mode", "notes"].every((k) =>
+              text(g[k]),
+            ) ||
+            g.notes.length > 20000 ||
+            !Array.isArray(g.steps) ||
+            g.steps.length < 1 ||
+            g.steps.length > 10 ||
+            !g.steps.every(text) ||
+            !text(g.createdAt) ||
+            Number.isNaN(Date.parse(g.createdAt)) ||
+            typeof g.done !== "boolean" ||
+            ![
+              "studio",
+              "home",
+              "muse",
+              "characters",
+              "architecture",
+              "editor",
+              "continuity",
+              "publisher",
+              "tools",
+              "board",
+            ].includes(g.tool) ||
+            (g.scope !== undefined && !text(g.scope)) ||
+            (g.care !== undefined && typeof g.care !== "boolean") ||
+            (g.duration !== undefined &&
+              g.duration !== null &&
+              (!Number.isInteger(g.duration) ||
+                g.duration < 1 ||
+                g.duration > 120)) ||
+            (g.related !== undefined &&
+              (!Array.isArray(g.related) || !g.related.every(text))) ||
+            (g.sourceIds !== undefined &&
+              (!Array.isArray(g.sourceIds) || !g.sourceIds.every(text)))
+          )
+            throw Error("Piano conservato non valido.");
+          take(g.id);
+        }
+      }
     }
     if (!projectIds.has(db.active))
       throw Error("Progetto attivo non presente nel backup.");
@@ -238,6 +287,7 @@
     for (const p of db.projects) {
       p.checklist ??= {};
       p.lastBackup ??= "";
+      p.guidancePlans ??= [];
       for (const c of p.chapters)
         for (const s of c.scenes)
           for (const k of [
@@ -276,6 +326,7 @@
       return mapping.get(old);
     };
     copy.id = uid();
+    for (const g of copy.guidancePlans || []) g.id = uid();
     for (const c of copy.chapters) {
       c.id = remap(c.id);
       for (const s of c.scenes) s.id = remap(s.id);

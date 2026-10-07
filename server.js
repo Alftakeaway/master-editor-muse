@@ -10,6 +10,8 @@ const files = {
   "/index.html": "index.html",
   "/app.js": "app.js",
   "/core.js": "core.js",
+  "/paths-data.js": "paths-data.js",
+  "/paths-ui.js": "paths-ui.js",
   "/style.css": "style.css",
   "/icon.svg": "icon.svg",
 };
