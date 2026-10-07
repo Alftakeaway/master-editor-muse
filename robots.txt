@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /archive/
+Disallow: /tests/
+Disallow: /work/
+Sitemap: https://master-editor-muse.vercel.app/sitemap.xml

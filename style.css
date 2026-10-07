@@ -1208,3 +1208,225 @@ dialog .card {
     content: none;
   }
 }
+:root {
+  --editor-size: 18px;
+  --editor-spacing: 1.8;
+  --editor-font: Georgia, serif;
+}
+.writing textarea,
+.desk-preview {
+  font-size: var(--editor-size);
+  line-height: var(--editor-spacing);
+  font-family: var(--editor-font);
+}
+.desk-preview {
+  padding: 25px;
+  background: var(--white);
+  color: var(--ink);
+  border-left: 2px solid var(--gold);
+}
+.field-help {
+  margin: 6px 0 0;
+}
+.field-help summary {
+  font-size: 11px;
+  color: var(--wine);
+}
+.field-help p {
+  font-size: 12px !important;
+  line-height: 1.6;
+}
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.resource-card {
+  display: flex;
+  flex-direction: column;
+}
+.resource-card .actions {
+  margin-top: auto;
+}
+.resource-card a.btn {
+  text-decoration: none;
+  color: var(--wine);
+  display: inline-block;
+}
+.reading-notes {
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  padding-top: 30px;
+}
+.reading-notes .card {
+  margin: 18px 0;
+}
+.reading-notes input,
+.reading-notes textarea {
+  width: 100%;
+  font: inherit;
+  background: var(--white);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 10px;
+  margin: 6px 0 14px;
+  border-radius: 6px;
+}
+.reading-notes textarea {
+  min-height: 160px;
+  resize: vertical;
+}
+#projectTemplate,
+#templateTitle {
+  width: 100%;
+  margin: 10px 0 20px;
+}
+.daily-progress {
+  margin: 18px 0;
+}
+.guide-public {
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 24px;
+}
+.guide-public header {
+  margin-bottom: 40px;
+}
+.guide-public p,
+.guide-public li {
+  line-height: 1.8;
+}
+.guide-public .card {
+  margin: 20px 0;
+}
+.guide-public a {
+  color: var(--wine);
+}
+[data-theme="dark"] {
+  --paper: #211f20;
+  --paper2: #292627;
+  --ink: #f3ede3;
+  --muted: #c0b7ac;
+  --wine: #e49aae;
+  --gold: #c9ad7b;
+  --line: #51484b;
+  --white: #302c2d;
+  --green: #adccb0;
+  color-scheme: dark;
+}
+[data-theme="dark"] .card {
+  background: var(--white);
+}
+[data-theme="dark"] .writing textarea {
+  background: var(--white);
+  color: var(--ink);
+}
+[data-theme="dark"] .tree,
+[data-theme="dark"] .ai,
+[data-theme="dark"] .quote {
+  background: var(--paper2);
+}
+[data-theme="dark"] .tree button {
+  color: var(--muted);
+}
+[data-theme="dark"] .tree button.sel {
+  background: var(--line);
+  color: var(--wine);
+}
+[data-theme="dark"] .progress {
+  background: var(--line);
+}
+[data-theme="dark"] .tag {
+  background: var(--line);
+  color: var(--ink);
+}
+[data-theme="dark"] .btn.primary,
+[data-theme="dark"] .new {
+  color: var(--paper);
+}
+[data-theme="dark"] .chip {
+  background: var(--paper2);
+  color: var(--ink);
+}
+[data-theme="dark"] .sidebar {
+  background: #191719;
+}
+[data-theme="dark"] .path-card,
+[data-theme="dark"] .mode {
+  color: var(--ink);
+}
+#offlineStatus {
+  font-size: 11px;
+  color: var(--muted);
+}
+#applyUpdate {
+  margin: 0;
+  padding: 5px 9px;
+}
+#deskTheme,
+#deskFont,
+#deskSize,
+#deskSpacing {
+  width: 100%;
+  margin: 10px 0 24px;
+}
+@media (max-width: 1100px) {
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .resource-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .settings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .guide-public {
+    padding: 25px 18px;
+  }
+}
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  #offlineStatus,
+  #applyUpdate {
+    display: none;
+  }
+}
+.card .desk-preview {
+  font-size: var(--editor-size);
+  line-height: var(--editor-spacing);
+}
+.settings {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+@media (max-width: 1100px) {
+  .settings {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .settings {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.path-filters .check-item input {
+  width: auto;
+  flex: 0 0 auto;
+  margin: 3px 0;
+}
+.reading-notes a.btn {
+  color: var(--wine);
+  text-decoration: none;
+}
+[data-theme="dark"] #projectSelect {
+  background: var(--paper2);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.resource-card h2 {
+  font-size: 20px;
+  margin: 0 0 10px;
+}

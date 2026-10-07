@@ -89,7 +89,8 @@ function field(label, key, value, type = "text", scope = "project") {
     type === "textarea"
       ? `<textarea ${attrs}>${esc(value)}</textarea>`
       : `<input ${attrs} type="${type}" value="${esc(value)}" ${type === "number" ? 'min="1" max="10000000" step="1" required' : ""}>`;
-  return `<div class="field"><label for="${id}">${esc(label)}</label>${control}</div>`;
+  const tip = WriterDesk.help[label];
+  return `<div class="field"><label for="${id}">${esc(label)}</label>${control}${tip ? `<details class="field-help"><summary>Guida a ${esc(label)}</summary><p>${esc(tip[0])}</p><p><b>Esempio / criterio:</b> ${esc(tip[1])}</p></details>` : ""}</div>`;
 }
 const fields = (obj, scope) =>
   `<div class="section-grid">${Object.entries(obj)
@@ -137,7 +138,7 @@ const views = {
       ["Costruisci la Story Bible", p.bible.length > 0, "characters"],
       ["Conserva un backup", !!p.lastBackup, "backup"],
     ];
-    return `${head("IL TUO STUDIO", "Scrivi con coraggio.", "Riscrivi con precisione.")}<div class="project"><div class="card"><div class="eyebrow">PROGETTO ATTIVO</div><h2>${esc(p.title)}</h2><p>${esc(p.genre)} · ${scenes().length} scene</p><div class="progress" role="progressbar" aria-label="Obiettivo romanzo" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="metrics"><div><strong>${n.toLocaleString("it")}</strong><span>PAROLE</span></div><div><strong>${pct}%</strong><span>OBIETTIVO</span></div><div><strong>${p.chapters.length}</strong><span>CAPITOLI</span></div></div></div><div class="card"><div class="eyebrow">LA SESSIONE DI OGGI</div><h3>${p.sessions[day()] || 0} / ${p.dailyGoal} parole</h3><p>Variazione netta del testo: può essere negativa quando tagli. Anche la revisione è lavoro.</p>${button("Apri Studio →", "studio")} ${button("Trova il prossimo passo", "paths")}</div></div><div class="grid4">${[
+    return `${head("IL TUO STUDIO", "Scrivi con coraggio.", "Riscrivi con precisione.")}<div class="project"><div class="card"><div class="eyebrow">PROGETTO ATTIVO</div><h2>${esc(p.title)}</h2><p>${esc(p.genre)} · ${scenes().length} scene</p><div class="progress" role="progressbar" aria-label="Obiettivo romanzo" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div><div class="metrics"><div><strong>${n.toLocaleString("it")}</strong><span>PAROLE</span></div><div><strong>${pct}%</strong><span>OBIETTIVO</span></div><div><strong>${p.chapters.length}</strong><span>CAPITOLI</span></div></div></div><div class="card"><div class="eyebrow">LA SESSIONE DI OGGI</div><h3>${p.sessions[day()] || 0} / ${p.dailyGoal} parole</h3><p>Variazione netta del testo: può essere negativa quando tagli. Anche la revisione è lavoro.</p><div class="progress daily-progress" role="progressbar" aria-label="Obiettivo giornaliero" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.max(0, Math.min(100, Math.round(((p.sessions[day()] || 0) / p.dailyGoal) * 100)))}"><i style="width:${Math.max(0, Math.min(100, ((p.sessions[day()] || 0) / p.dailyGoal) * 100))}%"></i></div>${button("Apri Studio →", "studio")} ${button("Trova il prossimo passo", "paths")}</div></div><div class="grid4">${[
       ["muse", "Muse", "Premessa, tema e conflitto."],
       ["studio", "Studio", "Capitoli, scene e scrittura."],
       ["editor", "Editor", "Rilettura e strumenti del testo."],
@@ -149,7 +150,7 @@ const views = {
       )
       .join(
         "",
-      )}</div><div class="card settings">${field("Titolo", "title", p.title)}${field("Genere", "genre", p.genre)}${field("Obiettivo romanzo", "goal", p.goal, "number")}${field("Obiettivo giornaliero", "dailyGoal", p.dailyGoal, "number")}</div><div class="project"><div class="card"><div class="eyebrow">IL PROSSIMO PASSO</div><ol class="onboarding">${checks.map(([t, done, a]) => `<li><span>${done ? "✓" : "○"} ${t}</span>${button(done ? "Rivedi" : "Apri", a)}</li>`).join("")}</ol></div><div class="card"><div class="eyebrow">PORTA CON TE IL LAVORO</div><h3>Una copia fuori dal browser.</h3><p>${p.lastBackup ? "Ultima esportazione: " + esc(new Date(p.lastBackup).toLocaleString("it-IT")) : "Nessun backup esportato per questo progetto."}</p>${button("Backup completo", "backup")} ${button("Importa JSON / TXT / Markdown", "import")}<p>I dati locali non si sincronizzano fra browser.</p></div></div><div class="actions">${button("Esporta manoscritto .txt", "text")} ${button("Esporta manoscritto .md", "markdown")} ${button("Stampa manoscritto / PDF", "printManuscript")} ${button("Elimina progetto", "deleteProject")}</div><div class="quote">La tua voce viene prima. <small>Uno studio per scrivere, ricordare e riscrivere.</small></div>`;
+      )}</div><div class="card settings">${field("Titolo", "title", p.title)}${field("Autore (facoltativo)", "author", p.author)}${field("Genere", "genre", p.genre)}${field("Obiettivo romanzo", "goal", p.goal, "number")}${field("Obiettivo giornaliero", "dailyGoal", p.dailyGoal, "number")}</div><div class="project"><div class="card"><div class="eyebrow">IL PROSSIMO PASSO</div><ol class="onboarding">${checks.map(([t, done, a]) => `<li><span>${done ? "✓" : "○"} ${t}</span>${button(done ? "Rivedi" : "Apri", a)}</li>`).join("")}</ol></div><div class="card"><div class="eyebrow">PORTA CON TE IL LAVORO</div><h3>Una copia fuori dal browser.</h3><p>${p.lastBackup ? "Ultima esportazione: " + esc(new Date(p.lastBackup).toLocaleString("it-IT")) : "Nessun backup esportato per questo progetto."}</p>${button("Backup completo", "backup")} ${button("Importa JSON / TXT / Markdown", "import")}<p>I dati locali non si sincronizzano fra browser.</p></div></div><div class="actions">${button("Esporta manoscritto .txt", "text")} ${button("Esporta manoscritto .md", "markdown")} ${button("Esporta .docx", "docx")} ${button("Esporta .epub", "epub")} ${button("Stampa manoscritto / PDF", "printManuscript")} ${button("Elimina progetto", "deleteProject")}</div><div class="quote">La tua voce viene prima. <small>Uno studio per scrivere, ricordare e riscrivere.</small></div>`;
   },
   studio() {
     const s = scene();
@@ -290,6 +291,15 @@ const views = {
       `<div class="actions">${button("Esporta dossier .txt", "publisherExport")} ${button("Stampa dossier / PDF", "printPublisher")}</div>`
     );
   },
+  library() {
+    return deskUI.library();
+  },
+  comfort() {
+    return deskUI.comfort();
+  },
+  guide() {
+    return deskUI.guide();
+  },
   paths() {
     return pathUI.render();
   },
@@ -319,6 +329,17 @@ const pathUI = WriterPathsUI.create({
   ask,
 });
 pathUI.attach(main);
+const deskUI = WriterDeskUI.create({
+  data: WriterDesk,
+  M: Muse,
+  current,
+  save,
+  notice,
+  download,
+  open: render,
+  ask,
+});
+deskUI.attach(main);
 
 function contextNotes() {
   const s = scene(),
@@ -658,6 +679,30 @@ main.addEventListener("click", async (e) => {
         "text/plain",
       );
       return;
+    case "docx":
+    case "epub": {
+      el.disabled = true;
+      notice("Preparazione del file…");
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        const bytes = a === "docx" ? MuseExport.docx(p) : MuseExport.epub(p);
+        download(
+          p.title + "." + a,
+          bytes,
+          a === "docx"
+            ? "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            : "application/epub+zip",
+        );
+        notice(
+          "File preparato sul dispositivo. Conserva anche il backup JSON del progetto.",
+        );
+      } catch (error) {
+        notice("Esportazione non riuscita: " + error.message);
+      } finally {
+        el.disabled = false;
+      }
+      return;
+    }
     case "publisherExport":
       download(
         "publisher.txt",
@@ -916,15 +961,8 @@ document.querySelector("#projectSelect").onchange = (e) => {
   render();
 };
 document.querySelector("#newProject").onclick = async () => {
-  const title = await ask({
-    title: "Un nuovo progetto",
-    message:
-      "Inizia con una scena vuota. I progetti esistenti restano conservati.",
-    value: "",
-    confirmLabel: "Crea progetto",
-  });
-  if (!title) return;
-  const p = project(title);
+  const p = await deskUI.newProject();
+  if (!p) return;
   db.projects.push(p);
   db.active = p.id;
   sceneId = null;
@@ -1059,6 +1097,7 @@ document.addEventListener("keydown", (e) => {
       ?.setAttribute("aria-pressed", "false");
   }
 });
+deskUI.init();
 render();
 if (store.reason) {
   status("⚠ Archivio da recuperare");

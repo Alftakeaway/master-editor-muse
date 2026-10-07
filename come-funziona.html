@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Come funziona · The Master Editor & Muse</title>
+    <meta
+      name="description"
+      content="Studio gratuito per scrittori: progetto, scene, revisione, biblioteca e backup. Scopri come lavorare e dove restano i tuoi dati."
+    />
+    <meta
+      property="og:title"
+      content="The Master Editor & Muse · Come funziona"
+    />
+    <meta
+      property="og:description"
+      content="Uno studio gratuito per progettare, scrivere, ricordare e revisionare."
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="canonical"
+      href="https://master-editor-muse.vercel.app/come-funziona.html"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="icon.svg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "The Master Editor & Muse",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web",
+        "url": "https://master-editor-muse.vercel.app/",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "description": "Studio locale per scrittori con scene, Story Bible, revisione e biblioteca di risorse."
+      }
+    </script>
+  </head>
+  <body>
+    <main class="guide-public">
+      <header>
+        <div class="eyebrow">THE MASTER EDITOR & MUSE</div>
+        <h1>Lo spazio per la tua storia.</h1>
+        <p>
+          Uno studio gratuito per progettare, scrivere e revisionare. La tua
+          voce viene prima.
+        </p>
+        <a class="btn primary" href="./">Apri lo studio</a>
+      </header>
+      <section class="card">
+        <h2>Quattro passaggi, senza un percorso obbligato.</h2>
+        <ol>
+          <li><b>Muse:</b> premessa, tema, desiderio e conflitto.</li>
+          <li>
+            <b>Studio:</b> capitoli e scene, note, concentrazione e versioni.
+          </li>
+          <li>
+            <b>Editor:</b> checklist e osservazioni del testo per una revisione
+            per livelli.
+          </li>
+          <li>
+            <b>Publisher:</b> logline, sinossi, pitch e materiali per il
+            destinatario.
+          </li>
+        </ol>
+        <p>
+          Bacheca, Story Bible e timeline aiutano a ricordare. I 36 Percorsi
+          propongono una prova concreta quando incontri un ostacolo.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Una prima sessione di lavoro.</h2>
+        <p>
+          Crea un progetto vuoto o un modello modificabile. Scrivi una premessa
+          provvisoria e una scena in cui qualcosa cambia. Registra i fatti
+          stabili nella Story Bible; poi esporta un backup JSON.
+        </p>
+        <p>
+          La biblioteca collega risorse di lettura e ricerca ai siti originali;
+          preferiti e schede di lettura sono inclusi nel progetto. I modelli e i
+          percorsi sono strumenti editoriali, non formule o test clinici.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Dove restano i dati.</h2>
+        <p>
+          Il programma salva i progetti nel browser sul tuo dispositivo. Non
+          invia manoscritti, schede o appunti al server e non include account,
+          analytics o richieste AI. L’integrazione AI è conservata nel
+          repository per il futuro.
+        </p>
+        <p>
+          Il sito pubblico e localhost hanno archivi distinti, così come browser
+          e profili differenti. Export e import JSON permettono il trasferimento
+          del lavoro.
+        </p>
+        <p>
+          Il sito è servito da Vercel e può caricare font da Google Fonts. I
+          fornitori possono trattare dati tecnici delle connessioni secondo le
+          proprie condizioni. Aprendo una biblioteca esterna visiti il suo sito;
+          nessun testo del progetto viene allegato al collegamento.
+        </p>
+        <p>
+          Questa pagina descrive il funzionamento corrente e non certifica
+          conformità legali o sicurezza assoluta.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Backup e offline.</h2>
+        <p>
+          Il salvataggio locale non è una copia esterna. Cancellare i dati del
+          sito o cambiare browser può rendere i progetti non disponibili:
+          conserva backup regolari sul dispositivo.
+        </p>
+        <p>
+          Dopo il primo caricamento online e lo stato “Studio pronto offline”,
+          puoi riaprire gli strumenti senza rete. Le biblioteche esterne e i
+          font remoti possono restare indisponibili. Gli aggiornamenti vengono
+          proposti, non applicati a sorpresa durante la digitazione.
+        </p>
+      </section>
+      <section class="card">
+        <h2>Scegli il formato.</h2>
+        <ul>
+          <li>
+            <b>JSON:</b> progetto completo, comprese schede, versioni e
+            quaderni.
+          </li>
+          <li><b>TXT / Markdown:</b> manoscritto testuale.</li>
+          <li><b>DOCX:</b> manoscritto modificabile con titoli e paragrafi.</li>
+          <li><b>EPUB:</b> lettura con indice dei capitoli, senza DRM.</li>
+          <li><b>PDF:</b> finestra di stampa del browser.</li>
+        </ul>
+        <p>
+          I formati del manoscritto non sostituiscono il backup JSON. Import
+          DOCX ed EPUB non incluso; nessun formato garantisce da solo idoneità a
+          ogni editore o piattaforma.
+        </p>
+      </section>
+      <footer>
+        <a class="btn primary" href="./">Inizia a scrivere gratis</a>
+        <p>
+          <a
+            href="https://github.com/Alftakeaway/master-editor-muse"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Codice e documentazione</a
+          >
+        </p>
+      </footer>
+    </main>
+    <script>
+      try {
+        const p = JSON.parse(localStorage.getItem("musePreferences") || "null");
+        if (
+          p &&
+          (p.theme === "dark" ||
+            (p.theme === "system" &&
+              matchMedia("(prefers-color-scheme: dark)").matches))
+        )
+          document.documentElement.dataset.theme = "dark";
+      } catch {}
+    </script>
+  </body>
+</html>

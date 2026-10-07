@@ -83,7 +83,7 @@ Annulla/ripeti mantiene fino a 50 gruppi di modifiche per scena durante la sessi
 | Esporta manoscritto | TXT o Markdown con capitoli, scene e testo                                 |
 | Esporta Publisher   | Dossier editoriale in TXT                                                  |
 
-Gli import devono essere UTF-8; file binari, date impossibili, obiettivi non validi e identificativi duplicati sono respinti prima di cambiare i progetti. Gli identificativi dei progetti importati vengono rigenerati insieme ai riferimenti di scene, beat e versioni. Il limite di importazione è **10 MB**. DOCX e PDF non sono supportati.
+Gli import devono essere UTF-8; file binari, date impossibili, obiettivi non validi e identificativi duplicati sono respinti prima di cambiare i progetti. Gli identificativi dei progetti importati vengono rigenerati insieme ai riferimenti di scene, beat e versioni. Il limite di importazione è **10 MB**. Import DOCX, EPUB e PDF non incluso.
 
 ## Struttura e architettura
 
@@ -136,7 +136,7 @@ git commit -m "docs: update project readme"
 git push origin main
 ```
 
-Il sito usa il preset **Other**, la cartella radice del repository e l’output statico nella radice. Non richiede una build applicativa. La configurazione `.vercelignore` esclude il ripostiglio, i test, il server locale e i file di ambiente dal deploy.
+Il sito usa il preset **Other** e la radice del repository. Vercel esegue npm run vercel-build: prepara il fingerprint dell’offline e copia soltanto gli asset pubblici in public/. La cartella è generata ed esclusa da Git; vercel.json seleziona questo output. Archivi, test e script non vengono pubblicati come file del sito.
 
 Dopo la pubblicazione, verifica che il deployment sia **Ready** su Vercel e apri il sito di produzione. Per ripristinare una versione precedente puoi usare i deployment conservati nel pannello Vercel; questo non ripristina i manoscritti nel browser.
 
@@ -165,7 +165,7 @@ Le nuove funzioni sono eseguite sul dispositivo: nessun abbonamento, chiave API 
 - **Scorciatoie**: Ctrl/Cmd+S salva una versione, Ctrl/Cmd+E esporta il progetto, Esc chiude i dialoghi o la concentrazione.
 - **Recupero**: un solo file muse-recupero.json conserva il lavoro locale e la stringa originale dell’archivio nel campo recoveryOriginalRaw. Importandolo normalmente vengono recuperati i progetti correnti; il dato originale rimane disponibile per un recupero tecnico.
 
-I font possono richiedere rete al primo caricamento. Non è ancora presente un service worker: l’app non promette un avvio offline dopo la chiusura del browser.
+I font possono richiedere rete al primo caricamento. Dopo lo stato Studio pronto offline gli strumenti possono riaprire senza rete; i siti esterni richiedono connessione.
 
 ## Percorsi decisionali per scrittori
 
@@ -183,3 +183,41 @@ Ogni albero ha due domande specifiche e, dove pertinente, una terza per sceglier
 Gli esercizi sono una sintesi editoriale originale. Lo studio di Ahmed e Güss informa la classificazione del blocco, ma non valida questo strumento come test diagnostico. I percorsi non attribuiscono condizioni cliniche dalla durata del blocco; quelli sul disagio generale indicano sostegno senza obiettivi di produzione. Non sono richiesti AI, account, API o servizi a pagamento.
 
 Catalogo completo e criteri: [docs/PERCORSI.md](docs/PERCORSI.md).
+
+## Comfort, guida e modelli
+
+**Preferenze** offre carta avorio, modalità notte e tema del dispositivo, oltre a corpo del manoscritto (16–28 px), carattere e interlinea. Le preferenze sono in `musePreferences`, separate dai progetti, e non cambiano il formato degli export. Lo zoom del browser rimane disponibile.
+
+**Guida** illustra Muse → Studio → Editor → Publisher e spiega archivio, trasferimento e backup. Le guide accanto ai campi sono apribili da tastiera con esempi inventati. La [pagina pubblica](https://master-editor-muse.vercel.app/come-funziona.html) descrive uso e funzionamento dei dati, senza testimonianze inventate o certificazioni di conformità.
+
+Nuovo progetto offre sette punti di partenza: vuoto, romanzo, giallo, romance, fantasy, saggio e racconto. Creano nuove schede modificabili; non riscrivono i progetti esistenti.
+
+## Biblioteca e quaderno di lettura
+
+17 risorse per libri, archivi, cataloghi, ricerca, lingua e scrittura. Fra queste Liber Liber, Project Gutenberg, Wikisource, Gallica, Europeana, Internet Culturale, SBN, DOAB, DOAJ, Library of Congress, Commons e Crusca. [Catalogo e condizioni](docs/BIBLIOTECA.md).
+
+Non tutti i cataloghi contengono testi completi; consultazione gratuita non equivale a una licenza generale di riuso. Ricerca, filtri e preferiti sono locali. Il quaderno permette fino a 100 schede create nell’interfaccia con titolo, autore, URL e appunti; export TXT e backup JSON disponibili. L’import valida gli URL e rigenera gli ID delle note. Nessun libro viene copiato nel sito.
+
+## Export DOCX ed EPUB
+
+Generati sul dispositivo senza librerie di rete. DOCX contiene titolo, autore facoltativo, capitoli, scene e paragrafi in un manoscritto modificabile. EPUB contiene metadati in italiano, indice dei capitoli e XHTML senza DRM. Sono formati di lavoro/lettura: niente copertine, immagini o impaginazione specifica per un editore. Non sostituiscono il backup JSON delle schede.
+
+Verificati checksum ZIP, XML e riferimenti EPUB; DOCX letto con python-docx. Non sono stati eseguiti EPUBCheck o test su ogni lettore e versione di Word. Import DOCX ed EPUB non incluso.
+
+## Offline e aggiornamenti
+
+Il worker conserva soltanto gli asset pubblici della stessa origine. Non legge il localStorage, non memorizza manoscritti nella cache e non intercetta AI, POST o siti esterni. Il browser può rimuovere dati e cache: offline non sostituisce un backup esterno.
+
+Dopo un aggiornamento compare **Aggiorna studio**. L’azione verifica il salvataggio e chiede un ricaricamento esplicito; con più schede aperte l’attivazione viene rinviata. Manifest e icona sono inclusi; installazione dipendente dal browser.
+
+Per preparare una pubblicazione:
+
+```sh
+npm test
+npm run vercel-build
+git diff --check
+```
+
+La build aggiorna `sw.js` con il fingerprint degli asset: includilo nel commit. Su Vercel la preparazione è automatica. `public/` contiene solo l’output generato. Sviluppo locale: `npm run dev`; `PORT` può scegliere una porta alternativa.
+
+Riferimenti: [MDN Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers), [ECMA-376](https://ecma-international.org/publications-and-standards/standards/ecma-376/), [EPUB 3.3](https://www.w3.org/TR/epub-33/).

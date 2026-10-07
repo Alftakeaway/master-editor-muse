@@ -14,6 +14,15 @@ const files = {
   "/paths-ui.js": "paths-ui.js",
   "/style.css": "style.css",
   "/icon.svg": "icon.svg",
+  "/desk-data.js": "desk-data.js",
+  "/desk-ui.js": "desk-ui.js",
+  "/exports.js": "exports.js",
+  "/offline.js": "offline.js",
+  "/sw.js": "sw.js",
+  "/manifest.webmanifest": "manifest.webmanifest",
+  "/come-funziona.html": "come-funziona.html",
+  "/robots.txt": "robots.txt",
+  "/sitemap.xml": "sitemap.xml",
 };
 http
   .createServer(async (req, res) => {
@@ -41,14 +50,21 @@ http
     }
     res.setHeader(
       "Content-Type",
-      file.endsWith(".svg")
-        ? "image/svg+xml"
-        : file.endsWith(".js")
-          ? "text/javascript"
-          : file.endsWith(".css")
-            ? "text/css"
-            : "text/html",
+      file.endsWith(".webmanifest")
+        ? "application/manifest+json"
+        : file.endsWith(".txt")
+          ? "text/plain"
+          : file.endsWith(".xml")
+            ? "application/xml"
+            : file.endsWith(".svg")
+              ? "image/svg+xml"
+              : file.endsWith(".js")
+                ? "text/javascript"
+                : file.endsWith(".css")
+                  ? "text/css"
+                  : "text/html",
     );
+    if (file === "sw.js") res.setHeader("Cache-Control", "no-cache");
     fs.createReadStream(path.join(__dirname, file)).pipe(res);
   })
   .listen(Number(process.env.PORT) || 8080, "127.0.0.1", () =>

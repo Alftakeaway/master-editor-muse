@@ -36,3 +36,11 @@ Nel browser: percorso del blocco fino al risultato, salvataggio con note, aggior
 
 - Verificato roundtrip reale del backup JSON con piano, note e stato completato.
 - Verificati annullamento e conferma della rimozione dal quaderno.
+
+## Comfort, biblioteca ed offline
+
+36 test complessivi. Template validi e indipendenti, risorse e filtri, URL, note e preferiti in import/export, ZIP/CRC, DOCX e struttura EPUB. Worker testato per escludere API, POST e siti esterni e rinviare l’attivazione con altre schede.
+
+Prove browser: creazione fantasy, testo regolabile e notte persistenti, preferiti e note dopo reload, quaderno incluso nel roundtrip JSON, download DOCX/EPUB, layout biblioteca/preferenze a 390 px. Offline reale: reload, modifica del testo, salvataggio, nuovo reload e catalogo locale. Aggiornamento con due schede rinviato; dopo la chiusura della seconda aggiornamento e riapertura senza perdita del testo.
+
+DOCX letto con python-docx; EPUB controllato con zipfile e parser XML, riferimenti del manifest risolti. Verifica visiva notte desktop/mobile. Nessuna certificazione generale WCAG o EPUBCheck dichiarata.

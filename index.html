@@ -13,6 +13,13 @@
       content="La tua voce viene prima. Progetta, scrivi e revisiona il tuo romanzo."
     />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The Master Editor & Muse" />
+    <meta
+      name="twitter:description"
+      content="Studio gratuito per scrittori: scene, revisione, percorsi e biblioteca."
+    />
+    <link rel="canonical" href="https://master-editor-muse.vercel.app/" />
     <meta name="theme-color" content="#6d2637" />
     <title>The Master Editor & Muse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,6 +28,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Caslon+Display&display=swap"
     />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
   </head>
@@ -68,6 +76,15 @@
           <button data-view="paths" aria-label="Percorsi">
             ◇ <span>Percorsi</span>
           </button>
+          <button data-view="library" aria-label="Biblioteca">
+            ▤ <span>Biblioteca</span>
+          </button>
+          <button data-view="guide" aria-label="Guida">
+            ? <span>Guida</span>
+          </button>
+          <button data-view="comfort" aria-label="Preferenze">
+            ☾ <span>Preferenze</span>
+          </button>
           <button data-view="tools" aria-label="Strumenti">
             ⌕ <span>Strumenti</span>
           </button>
@@ -79,6 +96,8 @@
       <div class="content">
         <div class="statusbar">
           <span id="saveStatus" role="status"></span
+          ><span id="offlineStatus" role="status"></span
+          ><button id="applyUpdate" class="btn" hidden>Aggiorna studio</button
           ><span id="globalSprint" role="timer"></span
           ><span id="notice" role="status" aria-live="polite"></span>
           <div id="recoveryControls" hidden>
@@ -104,6 +123,10 @@
     <script src="core.js"></script>
     <script src="paths-data.js"></script>
     <script src="paths-ui.js"></script>
+    <script src="desk-data.js"></script>
+    <script src="desk-ui.js"></script>
+    <script src="exports.js"></script>
     <script src="app.js"></script>
+    <script src="offline.js"></script>
   </body>
 </html>

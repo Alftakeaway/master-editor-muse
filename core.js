@@ -38,6 +38,7 @@
     return {
       id: uid(),
       title,
+      author: "",
       genre: "Narrativa contemporanea",
       goal: 80000,
       dailyGoal: 500,
@@ -71,6 +72,8 @@
       sessions: {},
       history: [],
       guidancePlans: [],
+      readingNotes: [],
+      bookmarks: [],
       checklist: {},
       lastBackup: "",
     };
@@ -229,6 +232,51 @@
         throw Error("Checklist non valida.");
       if (p.lastBackup !== undefined && !text(p.lastBackup))
         throw Error("Data backup non valida.");
+      if (p.author !== undefined && !text(p.author))
+        throw Error("Autore non valido.");
+      if (
+        p.bookmarks !== undefined &&
+        (!Array.isArray(p.bookmarks) ||
+          p.bookmarks.length > 200 ||
+          !p.bookmarks.every(id) ||
+          new Set(p.bookmarks).size !== p.bookmarks.length)
+      )
+        throw Error("Preferiti non validi.");
+      if (p.readingNotes !== undefined) {
+        if (!Array.isArray(p.readingNotes) || p.readingNotes.length > 200)
+          throw Error("Quaderno di lettura non valido.");
+        for (const n of p.readingNotes) {
+          if (
+            !record(n) ||
+            !id(n.id) ||
+            ![
+              "title",
+              "author",
+              "url",
+              "notes",
+              "resourceId",
+              "createdAt",
+            ].every((k) => text(n[k])) ||
+            n.notes.length > 20000 ||
+            Number.isNaN(Date.parse(n.createdAt))
+          )
+            throw Error("Scheda di lettura non valida.");
+          if (n.url) {
+            try {
+              const u = new URL(n.url);
+              if (
+                !["http:", "https:"].includes(u.protocol) ||
+                u.username ||
+                u.password
+              )
+                throw Error();
+            } catch {
+              throw Error("URL della lettura non valido.");
+            }
+          }
+          take(n.id);
+        }
+      }
       if (p.guidancePlans !== undefined) {
         if (!Array.isArray(p.guidancePlans) || p.guidancePlans.length > 100)
           throw Error("Quaderno dei percorsi non valido.");
@@ -288,6 +336,9 @@
       p.checklist ??= {};
       p.lastBackup ??= "";
       p.guidancePlans ??= [];
+      p.author ??= "";
+      p.readingNotes ??= [];
+      p.bookmarks ??= [];
       for (const c of p.chapters)
         for (const s of c.scenes)
           for (const k of [
@@ -326,6 +377,7 @@
       return mapping.get(old);
     };
     copy.id = uid();
+    for (const n of copy.readingNotes || []) n.id = uid();
     for (const g of copy.guidancePlans || []) g.id = uid();
     for (const c of copy.chapters) {
       c.id = remap(c.id);
