@@ -1,7 +1,7 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
-const handler = require('./api/editor');
+
 try { process.loadEnvFile('.env.local'); } catch {}
 const files = {'/':'index.html','/index.html':'index.html','/app.js':'app.js','/style.css':'style.css'};
 http.createServer(async (req,res)=>{
@@ -10,7 +10,7 @@ http.createServer(async (req,res)=>{
  if (req.url === '/api/editor') {
   let body='';
   for await (const chunk of req) {body+=chunk; if(body.length>300000) return res.status(413).json({error:'Richiesta troppo grande'});}
-  req.body=body;return handler(req,res);
+  return res.status(410).json({error:'Integrazione AI archiviata.'});
  }
  const file=files[req.url?.split('?')[0]];
  if(!file) {res.statusCode=404;return res.end('Not found')}
