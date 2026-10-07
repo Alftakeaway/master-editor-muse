@@ -2,8 +2,8 @@
 
 Studio editoriale per progettare, scrivere e revisionare un romanzo. La v2 conserva il design avorio e borgogna, i titoli serif e gli spazi di scrittura del progetto originale.
 
-**Sito:** [master-editor-muse.vercel.app](https://master-editor-muse.vercel.app)  
-**Repository:** [Alftakeaway/master-editor-muse](https://github.com/Alftakeaway/master-editor-muse)  
+**Sito:** [master-editor-muse.vercel.app](https://master-editor-muse.vercel.app)
+**Repository:** [Alftakeaway/master-editor-muse](https://github.com/Alftakeaway/master-editor-muse)
 **Branch di produzione:** `main`
 
 ## Stato del progetto
