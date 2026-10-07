@@ -1,11 +1,104 @@
-<!doctype html><html lang='it'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>The Master Editor & Muse</title><link rel='stylesheet' href='style.css'></head><body>
-<div class='app'>
-<aside class='sidebar'>
-<div class='brand'><div class='seal'>M</div><div><strong>The Master Editor</strong><span>& Muse</span></div></div>
-<button class='new' id='newProject'>＋ Nuovo progetto</button>
-<label class='project-label'>PROGETTI<select id='projectSelect' aria-label='Progetto attivo'></select></label><nav id='nav'>
-<button data-view='home' class='active'>⌂ <span>Dashboard</span></button><button data-view='studio'>✒ <span>Studio</span></button><button data-view='muse'>✦ <span>Muse</span></button><button data-view='characters'>♙ <span>Story Bible</span></button><button data-view='architecture'>⌘ <span>Architettura</span></button><button data-view='editor'>✓ <span>Editor</span></button><button data-view='continuity'>∞ <span>Continuità</span></button><button data-view='publisher'>↗ <span>Publisher</span></button>
-</nav><div class='sidebar-foot'><span>MASTER EDITOR</span><small>La tua voce viene prima.</small></div></aside>
-<div class='content'><div class='statusbar'><span id='saveStatus' role='status'></span><span id='notice' role='alert'></span></div><main id='main'></main></div><input id='importFile' type='file' accept='.json,.txt,.md' hidden><dialog id='versions'></dialog>
-</div>
-<script src='app.js'></script></body></html>
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Uno studio editoriale gratuito per scrivere romanzi: scene, Story Bible, bacheca, revisioni e backup locali."
+    />
+    <meta property="og:title" content="The Master Editor & Muse" />
+    <meta
+      property="og:description"
+      content="La tua voce viene prima. Progetta, scrivi e revisiona il tuo romanzo."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#6d2637" />
+    <title>The Master Editor & Muse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Libre+Caslon+Display&display=swap"
+    />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="seal">M</div>
+          <div><strong>The Master Editor</strong><span>& Muse</span></div>
+        </div>
+        <button class="new" id="newProject" aria-label="Nuovo progetto">
+          ＋ Nuovo progetto
+        </button>
+        <label class="project-label" for="projectSelect">PROGETTI</label
+        ><select id="projectSelect" aria-label="Progetto attivo"></select>
+        <nav id="nav" aria-label="Sezioni dello studio">
+          <button data-view="home" aria-label="Dashboard">
+            ⌂ <span>Dashboard</span>
+          </button>
+          <button data-view="studio" aria-label="Studio">
+            ✒ <span>Studio</span>
+          </button>
+          <button data-view="board" aria-label="Bacheca">
+            ▦ <span>Bacheca</span>
+          </button>
+          <button data-view="muse" aria-label="Muse">
+            ✦ <span>Muse</span>
+          </button>
+          <button data-view="characters" aria-label="Story Bible">
+            ♙ <span>Story Bible</span>
+          </button>
+          <button data-view="architecture" aria-label="Architettura">
+            ⌘ <span>Architettura</span>
+          </button>
+          <button data-view="editor" aria-label="Editor">
+            ✓ <span>Editor</span>
+          </button>
+          <button data-view="continuity" aria-label="Continuità">
+            ∞ <span>Continuità</span>
+          </button>
+          <button data-view="publisher" aria-label="Publisher">
+            ↗ <span>Publisher</span>
+          </button>
+          <button data-view="tools" aria-label="Strumenti">
+            ⌕ <span>Strumenti</span>
+          </button>
+        </nav>
+        <div class="sidebar-foot">
+          <span>MASTER EDITOR</span><small>La tua voce viene prima.</small>
+        </div>
+      </aside>
+      <div class="content">
+        <div class="statusbar">
+          <span id="saveStatus" role="status"></span
+          ><span id="globalSprint" role="timer"></span
+          ><span id="notice" role="status" aria-live="polite"></span>
+          <div id="recoveryControls" hidden>
+            <button class="btn" id="exportRecovery">Esporta copie</button
+            ><button class="btn" id="reloadProjects">
+              Carica archivio aggiornato</button
+            ><button class="btn" id="retrySave">Riprova salvataggio</button
+            ><button class="btn" id="resetArchive">Reimposta con copie</button>
+          </div>
+        </div>
+        <main id="main" tabindex="-1"></main>
+      </div>
+    </div>
+    <input id="importFile" type="file" accept=".json,.txt,.md" hidden />
+    <dialog id="versions" aria-labelledby="versionsTitle"></dialog>
+    <dialog id="actionDialog" aria-labelledby="actionTitle"></dialog>
+    <div id="printArea"></div>
+    <noscript
+      ><p>
+        Attiva JavaScript per usare lo studio e il salvataggio locale.
+      </p></noscript
+    >
+    <script src="core.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

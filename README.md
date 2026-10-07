@@ -12,18 +12,20 @@ L’applicazione funziona senza chiavi API o servizi AI. L’integrazione AI è 
 
 ## Funzionalità
 
-| Area | Strumenti disponibili |
-| --- | --- |
-| Dashboard | Selezione e creazione di progetti, titolo, genere, obiettivo totale e giornaliero |
-| Studio | Capitoli e scene, testo, POV, data/ora narrativa, luogo, stato, spostamento fra capitoli e taccuino di revisione |
-| Muse | Premessa, tema, conflitto, posta in gioco, alternative e domanda editoriale |
-| Story Bible | Schede modificabili per personaggi, luoghi, oggetti e regole |
-| Architettura | Beat ordinabili, atto, conseguenze e collegamento alla scena |
-| Editor | Guida ai quattro passaggi manuali: developmental edit, line edit, copy edit e proofreading |
-| Continuità | Timeline dalle date delle scene, luoghi non documentati e collegamenti ai beat mancanti |
-| Publisher | Genere, lettore, logline, sinossi, pitch, query, comp titles, percorso ed export del dossier |
+| Area         | Strumenti disponibili                                                                                                       |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| Dashboard    | Selezione e creazione di progetti, titolo, genere, obiettivo totale e giornaliero                                           |
+| Studio       | Capitoli e scene ordinabili, sinossi, note, metadati, annulla/ripeti, concentrazione, sprint e taccuino contestuale         |
+| Bacheca      | Schede delle scene con sinossi e ordine collegato al manoscritto                                                            |
+| Muse         | Premessa, tema, conflitto, posta in gioco, alternative e domanda editoriale                                                 |
+| Story Bible  | Schede modificabili per personaggi, luoghi, oggetti e regole                                                                |
+| Architettura | Beat ordinabili, atto, conseguenze e collegamento alla scena                                                                |
+| Editor       | Checklist salvata ed esportabile per developmental, line, copy edit e proofreading                                          |
+| Continuità   | Timeline dalle date delle scene, luoghi non documentati e collegamenti ai beat mancanti                                     |
+| Publisher    | Genere, lettore, logline, sinossi, pitch, query, comp titles, percorso, export TXT e stampa/PDF del dossier                 |
+| Strumenti    | Ricerca nelle scene, parole, caratteri, tempo di lettura, ripetizioni, frasi lunghe e statistiche degli ultimi sette giorni |
 
-Il salvataggio avviene sul dispositivo a ogni modifica. La dashboard mostra le parole del progetto, la percentuale dell’obiettivo e le parole nette aggiunte nella giornata. Lo Studio permette di conservare e ripristinare versioni del testo.
+Il salvataggio locale accorpa le modifiche con una pausa di 350 ms e viene completato quando lasci un campo, cambi sezione o nascondi la pagina. Lo stato distingue modifiche in attesa, salvataggio riuscito e sospensione. La dashboard mostra le parole del progetto, la percentuale dell’obiettivo e le parole nette aggiunte nella giornata. Lo Studio permette di conservare e ripristinare versioni del testo.
 
 ## Tecnologie
 
@@ -64,29 +66,32 @@ L’archivio corrente usa la chiave `museV2` nel `localStorage`. Al primo avvio,
 
 I progetti restano nel browser e nell’origine in cui sono stati creati. Il sito pubblico e `localhost:8080` hanno archivi distinti. Anche browser, profili, dispositivi o indirizzi differenti possono avere archivi separati: usa export e import per trasferire il lavoro.
 
-Sono conservate fino a **30 versioni per progetto**, condivise fra tutte le scene. Le versioni vengono create manualmente o prima dell’eliminazione di una scena. Non è una cronologia automatica di ogni battitura.
+Sono conservate fino a **30 versioni per scena**, con un limite globale di **300 per progetto**. Le versioni automatiche conservano il testo precedente alla prima modifica e alle successive modifiche dopo almeno 30 secondi; non sono copie di ogni battitura. Versioni manuali, eliminazioni e ripristini conservano anche i metadati della scena. Le scene eliminate si recuperano da **Versioni precedenti** come nuove scene. I limiti possono rimuovere le copie più vecchie.
 
-Esporta regolarmente **Backup di tutti i progetti**, soprattutto prima di cambiare dispositivo o cancellare i dati del browser. Un deploy del sito non trasferisce i manoscritti a GitHub o Vercel.
+Annulla/ripeti mantiene fino a 50 gruppi di modifiche per scena durante la sessione del browser, anche quando cambi scena. Questo stack non persiste al ricaricamento; le versioni salvate sì.
 
 ### Formati
 
-| Operazione | Formato e comportamento |
-| --- | --- |
-| Esporta progetto | JSON v2 con il progetto attivo e i relativi dati |
-| Backup completo | JSON v2 con tutti i progetti |
-| Importa JSON | Aggiunge i progetti, senza sostituire quelli già presenti |
-| Importa TXT / Markdown | Crea un progetto con il contenuto in una scena; non interpreta la formattazione |
-| Esporta manoscritto | TXT o Markdown con capitoli, scene e testo |
-| Esporta Publisher | Dossier editoriale in TXT |
+| Operazione          | Formato e comportamento                                                    |
+| ------------------- | -------------------------------------------------------------------------- |
+| Esporta progetto    | JSON v2 con il progetto attivo e i relativi dati                           |
+| Backup completo     | JSON v2 con tutti i progetti                                               |
+| Importa JSON        | Aggiunge i progetti, senza sostituire quelli già presenti                  |
+| Importa TXT         | Crea un progetto con il testo in una scena                                 |
+| Importa Markdown    | Titoli `#` → capitoli; `##` → scene; altri contenuti conservati come testo |
+| Esporta manoscritto | TXT o Markdown con capitoli, scene e testo                                 |
+| Esporta Publisher   | Dossier editoriale in TXT                                                  |
 
-Il limite di importazione è **10 MB**. DOCX e PDF non sono supportati.
+Gli import devono essere UTF-8; file binari, date impossibili, obiettivi non validi e identificativi duplicati sono respinti prima di cambiare i progetti. Gli identificativi dei progetti importati vengono rigenerati insieme ai riferimenti di scene, beat e versioni. Il limite di importazione è **10 MB**. DOCX e PDF non sono supportati.
 
 ## Struttura e architettura
 
 ```text
 index.html          Struttura della pagina e navigazione
 style.css           Design editoriale e adattamento agli schermi
-app.js              Viste, progetti, salvataggio, versioni e import/export
+app.js              Interfaccia, navigazione e azioni
+core.js             Modello, validazione, migrazione, import e strumenti del testo
+icon.svg            Icona del sito
 server.js           Server locale dei file attivi
 package.json        Comandi di avvio e verifica
 tests/app.test.js   Test di persistenza e integrazione archiviata
@@ -137,10 +142,24 @@ Dopo la pubblicazione, verifica che il deployment sia **Ready** su Vercel e apri
 - **Il progetto non compare su un altro dispositivo:** i dati sono locali; importa il backup JSON nello stesso sito sul nuovo dispositivo.
 - **Salvataggio non riuscito:** il browser potrebbe aver esaurito lo spazio o negato l’accesso. Esporta subito il lavoro prima di intervenire sui dati del sito.
 - **Archivio illeggibile:** l’app sospende la scrittura per non sovrascrivere il dato originale. Il recupero o reset dell’archivio va gestito dopo averne conservato una copia.
-- **Modifica in un’altra scheda:** il salvataggio viene sospeso nella scheda che rileva il conflitto. Esporta il lavoro locale e ricarica prima di continuare.
+- **Modifica in un’altra scheda:** il salvataggio viene sospeso nella scheda che rileva il conflitto. Usa **Esporta copie**, poi **Carica archivio aggiornato** per risolvere senza ricaricare la pagina.
 - **Porta 8080 occupata:** arresta il server già aperto prima di avviarne un secondo.
 - **Timeline incompleta:** compila le date delle scene; quelle senza data sono conteggiate separatamente.
 - **Controllo di continuità:** segnala riferimenti documentali mancanti, non tutte le contraddizioni narrative. Serve anche una rilettura del manoscritto.
-- **Sessione giornaliera:** misura parole nette aggiunte, non il tempo di lavoro o tutte le riscritture.
+- **Sessione giornaliera:** misura la variazione netta del testo, inclusi tagli e ripristini; può essere negativa. Non misura il tempo di lavoro.
 
 L’applicazione attuale è uno studio personale con archivi locali. Collaborazione in tempo reale, account, sincronizzazione cloud, import DOCX/PDF e analisi AI restano fuori dalle funzionalità attive.
+
+## Strumenti gratuiti e ispirazioni
+
+Le nuove funzioni sono eseguite sul dispositivo: nessun abbonamento, chiave API o servizio AI. Bacheca e sinossi prendono spunto dal [Corkboard di Scrivener](https://www.literatureandlatte.com/blog/organize-your-scrivener-project-with-the-corkboard); concentrazione, note e sprint dalla presentazione ufficiale di [Novlr](https://www.novlr.org/). È stata consultata anche [Reedsy Studio](https://reedsy.com/studio/) per il flusso di preparazione editoriale. Non vengono copiate interfacce, contenuti o servizi dei prodotti.
+
+- **Ricerca**: testo, titolo e note delle scene, con un massimo di 100 risultati visualizzati.
+- **Analisi**: frequenze letterali (non lemmatizzate), frasi oltre 35 parole e lettura stimata a 200 parole/minuto. Non sono giudizi editoriali o correzioni grammaticali automatiche.
+- **Taccuino**: riconosce i nomi testuali della Story Bible e mostra i beat collegati; non comprende sinonimi o significato.
+- **Sprint**: da 1 a 120 minuti, pausa e ripresa; termina al ricaricamento del browser.
+- **Stampa/PDF**: usa la finestra di stampa del browser e la destinazione “Salva come PDF”, se disponibile.
+- **Scorciatoie**: Ctrl/Cmd+S salva una versione, Ctrl/Cmd+E esporta il progetto, Esc chiude i dialoghi o la concentrazione.
+- **Recupero**: un solo file muse-recupero.json conserva il lavoro locale e la stringa originale dell’archivio nel campo recoveryOriginalRaw. Importandolo normalmente vengono recuperati i progetti correnti; il dato originale rimane disponibile per un recupero tecnico.
+
+I font possono richiedere rete al primo caricamento. Non è ancora presente un service worker: l’app non promette un avvio offline dopo la chiusura del browser.
