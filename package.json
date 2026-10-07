@@ -1,0 +1,5 @@
+{
+  "name": "master-editor-muse", "version": "2.0.0", "private": true,
+  "scripts": {"test": "node --test", "dev": "node server.js"},
+  "engines": {"node": ">=22"}
+}
